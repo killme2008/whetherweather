@@ -175,7 +175,7 @@ public class WeatherService extends Service {
 						R.string.temp_up_alert);
 				// cast to f temp for display
 				if (todayWeather.unit == Unit.US) {
-					absExtent = Math.abs(getFTemp(oldLowTemp) - lowTemp);
+					absExtent = Math.abs(getFTemp(oldLowTemp) - Integer.parseInt(todayWeather.lowTemp));
 				}
 				notifyWeather(title, title + ":" + alert + " " + absExtent
 						+ Unit.getUnit(todayWeather), detailIntent);
