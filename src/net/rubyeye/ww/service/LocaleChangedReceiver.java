@@ -8,22 +8,31 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
+
 /**
  * Locale changed receiver
+ * 
  * @author dennis
- *
+ * 
  */
 public class LocaleChangedReceiver extends BroadcastReceiver {
 
 	@Override
-	public void onReceive(Context context, Intent intent) {
+	public void onReceive(final Context context,final Intent intent) {
 		if (intent.getAction().equals("android.settings.LOCALE_SETTINGS")) {
-			Log.i(Constants.LOGTAG, " Locale was changed,refetch weather info");
-			Uri uri = UriUtils
-					.createUri(WhetherWeatherSetting.getCity(context));
-			Intent serviceIntent = new Intent(Intent.ACTION_RUN, uri);
-			serviceIntent.putExtra(Constants.EXTRA_UPDATE_AT_NOW, true);
-			context.startService(serviceIntent);
+			new Thread() {
+				@Override
+				public void run() {
+					Log.i(Constants.LOGTAG,
+							" Locale was changed,refetch weather info");
+					Uri uri = UriUtils.createUri(WhetherWeatherSetting
+							.getCity(context));
+					Intent serviceIntent = new Intent(Intent.ACTION_RUN, uri);
+					serviceIntent.putExtra(Constants.EXTRA_UPDATE_AT_NOW, true);
+					context.startService(serviceIntent);
+				}
+			}.start();
+
 		}
 
 	}
