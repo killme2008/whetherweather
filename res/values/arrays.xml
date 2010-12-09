@@ -2,7 +2,10 @@
 <resources>
 	<string-array name="severe_weathers">
 		<item>暴</item>
+		<item>阵</item>
 		<item>大</item>
+		<item>雨</item>
+		<item>雷</item>
 		<item>台风</item>
 		<item>雪</item>
 		<item>冰</item>
