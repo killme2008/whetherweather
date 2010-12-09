@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent" android:layout_height="fill_parent"
+	android:padding="10px" android.setVerticalScrollBarEnabled="true">
+
+	<TextView android:id="@+id/detail_title" android:layout_width="wrap_content"
+		android:layout_height="wrap_content" android:layout_marginLeft="10px"
+		android:layout_marginBottom="15px" style="@style/detail_label"
+		android:text="@string/detail_title" />
+
+	<TextView android:id="@+id/detail_day" android:layout_width="wrap_content"
+		android:layout_height="wrap_content" android:layout_marginLeft="10px"
+		android:layout_marginBottom="40px" style="@style/detail_label"
+		android:layout_below="@id/detail_title" />
+
+	<ImageView android:id="@+id/detail_image"
+		android:layout_width="wrap_content" android:layout_height="wrap_content"
+		android:layout_marginLeft="10px" android:layout_marginBottom="40px"
+		android:layout_toRightOf="@id/detail_day" android:layout_below="@id/detail_title" />
+
+	<TextView android:id="@+id/city_label" android:layout_width="wrap_content"
+		android:layout_height="wrap_content" android:layout_below="@id/detail_day"
+		android:layout_marginLeft="10px" android:layout_marginBottom="10px"
+		style="@style/detail_label" android:text="@string/city_label" />
+
+	<TextView android:id="@+id/detail_city" android:layout_width="wrap_content"
+		android:layout_height="wrap_content" android:layout_below="@id/city_label"
+		android:layout_marginLeft="10px" android:layout_marginBottom="2px" />
+
+	<TextView android:id="@+id/condition_label"
+		android:layout_width="wrap_content" android:layout_height="wrap_content"
+		android:layout_below="@id/detail_city" android:layout_marginLeft="10px"
+		android:layout_marginBottom="5px" style="@style/detail_label"
+		android:text="@string/condition_label" />
+	<TextView android:id="@+id/detail_condition"
+		android:layout_width="wrap_content" android:layout_height="wrap_content"
+		android:layout_below="@id/condition_label" android:layout_marginLeft="10px"
+		android:layout_marginBottom="5px" />
+
+	<TextView android:id="@+id/low_temp_label"
+		android:layout_width="wrap_content" android:layout_height="wrap_content"
+		android:layout_below="@id/detail_condition" android:layout_marginLeft="10px"
+		android:layout_marginBottom="5px" style="@style/detail_label"
+		android:text="@string/low_temp_label" />
+	<TextView android:id="@+id/detail_low_temp"
+		android:layout_width="wrap_content" android:layout_height="wrap_content"
+		android:layout_below="@id/low_temp_label" android:layout_marginLeft="10px"
+		android:layout_marginBottom="5px" />
+
+	<TextView android:id="@+id/high_temp_label"
+		android:layout_width="wrap_content" android:layout_height="wrap_content"
+		android:layout_below="@id/detail_low_temp" android:layout_marginLeft="10px"
+		android:layout_marginBottom="5px" style="@style/detail_label"
+		android:text="@string/high_temp_label" />
+	<TextView android:id="@+id/detail_high_temp"
+		android:layout_width="wrap_content" android:layout_height="wrap_content"
+		android:layout_below="@id/high_temp_label" android:layout_marginLeft="10px"
+		android:layout_marginBottom="5px" />
+
+	<TextView android:id="@+id/last_update_label"
+		android:layout_width="wrap_content" android:layout_height="wrap_content"
+		android:layout_below="@id/detail_high_temp" android:layout_marginLeft="10px"
+		android:layout_marginBottom="5px" style="@style/detail_label"
+		android:text="@string/last_update_label" />
+	<TextView android:id="@+id/detail_last_update"
+		android:layout_width="wrap_content" android:layout_height="wrap_content"
+		android:layout_below="@id/last_update_label"
+		android:layout_marginLeft="10px" android:layout_marginBottom="5px" />
+
+	<Button android:id="@+id/update_button" android:layout_width="wrap_content"
+		android:layout_height="wrap_content" android:layout_below="@id/detail_last_update"
+		android:layout_marginLeft="10px" android:layout_marginBottom="5px"
+		android:text="@string/update_label" />
+
+	<Button android:id="@+id/config_button" android:layout_width="wrap_content"
+		android:layout_height="wrap_content" android:layout_below="@id/detail_last_update"
+		android:layout_marginLeft="10px" android:layout_marginBottom="5px"
+		android:text="@string/config_label" android:layout_toRightOf="@id/update_button" />
+</RelativeLayout>
+

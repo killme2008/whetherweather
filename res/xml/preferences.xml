@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+	<PreferenceCategory android:key="@string/common_settings_key"
+		android:title="@string/common_settings_title">
+		<EditTextPreference android:key="@string/city_key"
+			android:title="@string/city_title" android:defaultValue="北京"
+			android:summary="@string/city_summary" />
+		<net.rubyeye.ww.preferences.IntEditTextPreference
+			android:key="@string/update_interval_key" android:title="@string/update_interval_title"
+			android:defaultValue="12" android:numeric="integer"
+			android:maxLength="2" android:summary="@string/update_interval_summary" />
+	</PreferenceCategory>
+	<PreferenceCategory android:key="@string/weather_reminder_key"
+		android:title="@string/weather_reminder_title">
+		<CheckBoxPreference android:key="@string/severe_weather_reminder_key"
+			android:title="@string/severe_weather_reminder_title"
+			android:summary="@string/severe_weather_reminder_summary"
+			android:defaultValue="true"></CheckBoxPreference>
+		<PreferenceScreen android:key="@string/temp_update_reminder_key"
+			android:title="@string/temp_update_reminder_title" android:summary="@string/temp_update_reminder_summary">
+			<CheckBoxPreference android:key="@string/temp_update_reminder_enable_key"
+				android:title="@string/temp_update_reminder_enable_title"
+				android:summary="@string/temp_update_reminder_enable_summary"
+				android:defaultValue="true"></CheckBoxPreference>
+			<net.rubyeye.ww.preferences.IntEditTextPreference
+				android:key="@string/temp_update_extent_key" android:title="@string/temp_update_extent_title"
+				android:inputType="phone" android:digits="0123456789"
+				android:defaultValue="5" android:summary="@string/temp_update_extent_summary" />
+		</PreferenceScreen>
+	</PreferenceCategory>
+</PreferenceScreen>
