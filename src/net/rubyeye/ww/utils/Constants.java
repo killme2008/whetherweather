@@ -2,7 +2,11 @@ package net.rubyeye.ww.utils;
 
 import java.text.SimpleDateFormat;
 import java.util.Locale;
-
+/**
+ * Constants
+ * @author dennis
+ *
+ */
 public class Constants {
 	public static final String LOGTAG = "WhetherWeather";
 	public static final String WW_PREFS = "WW_PREFS";

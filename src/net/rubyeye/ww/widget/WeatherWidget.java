@@ -10,6 +10,12 @@ import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
 
+/**
+ * Weather widget
+ * 
+ * @author dennis
+ * 
+ */
 public class WeatherWidget extends AppWidgetProvider {
 	@Override
 	public void onDeleted(Context context, int[] appWidgetIds) {

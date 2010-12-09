@@ -19,7 +19,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-
+/**
+ * Weather detail activity
+ * @author dennis
+ *
+ */
 public class WeatherDetail extends Activity {
 
 	static final String MAP_KEY = "bitmap";

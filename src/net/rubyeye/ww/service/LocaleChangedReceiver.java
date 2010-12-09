@@ -8,7 +8,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
-
+/**
+ * Locale changed receiver
+ * @author dennis
+ *
+ */
 public class LocaleChangedReceiver extends BroadcastReceiver {
 
 	@Override

@@ -13,7 +13,11 @@ import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import android.util.Log;
-
+/**
+ * WW settings activity
+ * @author dennis
+ *
+ */
 public class WhetherWeatherSetting extends PreferenceActivity {
 	private final class PreferenceChangedListener implements
 			SharedPreferences.OnSharedPreferenceChangeListener {

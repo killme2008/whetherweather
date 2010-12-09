@@ -4,6 +4,12 @@ import net.rubyeye.ww.data.Weather;
 import android.app.Application;
 import android.graphics.Bitmap;
 
+/**
+ * Weather app to store global weather info
+ * 
+ * @author dennis
+ * 
+ */
 public class WeatherApp extends Application {
 	private Weather weather;
 	private Bitmap weatherImage;

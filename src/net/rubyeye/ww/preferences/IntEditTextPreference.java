@@ -3,7 +3,11 @@ package net.rubyeye.ww.preferences;
 import android.content.Context;
 import android.preference.EditTextPreference;
 import android.util.AttributeSet;
-
+/**
+ * EditTextPreference to store integer
+ * @author dennis
+ *
+ */
 public class IntEditTextPreference extends EditTextPreference {
 
 	public IntEditTextPreference(Context context) {

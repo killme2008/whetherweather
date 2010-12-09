@@ -8,7 +8,11 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.util.Log;
-
+/**
+ * ConnectivityReceiver
+ * @author dennis
+ *
+ */
 public class ConnectivityReceiver extends BroadcastReceiver {
 	static String CLAATAG = ConnectivityReceiver.class.getSimpleName();
 

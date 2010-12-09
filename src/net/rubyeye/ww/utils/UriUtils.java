@@ -5,7 +5,11 @@ import java.net.URLEncoder;
 
 import android.net.Uri;
 import android.util.Log;
-
+/**
+ * Uri utilities
+ * @author dennis
+ *
+ */
 public class UriUtils {
 
 	public static Uri createUri(String city) {

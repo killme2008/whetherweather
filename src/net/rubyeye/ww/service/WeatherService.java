@@ -30,6 +30,12 @@ import android.os.IBinder;
 import android.util.Log;
 import android.widget.RemoteViews;
 
+/**
+ * Weather service running on background
+ * 
+ * @author dennis
+ * 
+ */
 public class WeatherService extends Service {
 	private final class LoadWeatherTask extends TimerTask {
 		@Override
@@ -169,7 +175,7 @@ public class WeatherService extends Service {
 						R.string.temp_up_alert);
 				// cast to f temp for display
 				if (todayWeather.unit == Unit.US) {
-					absExtent = getFTemp(absExtent);
+					absExtent = Math.abs(getFTemp(oldLowTemp) - lowTemp);
 				}
 				notifyWeather(title, title + ":" + alert + " " + absExtent
 						+ Unit.getUnit(todayWeather), detailIntent);
