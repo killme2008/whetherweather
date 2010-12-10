@@ -1,5 +1,6 @@
 package net.rubyeye.ww.data;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
@@ -56,7 +57,8 @@ public class GoogleWeatherFetcher {
 
 	public WeatherData getWeather() {
 		WeatherData r = null;
-
+		InputStream stream = null;
+		InputStreamReader streamReader = null;
 		try {
 			URL url = new URL(this.query);
 			SAXParserFactory spf = SAXParserFactory.newInstance();
@@ -64,13 +66,27 @@ public class GoogleWeatherFetcher {
 			XMLReader xr = sp.getXMLReader();
 			WeatherHandler handler = new WeatherHandler();
 			xr.setContentHandler(handler);
-			InputStream stream = url.openStream();
-			InputStreamReader streamReader = new InputStreamReader(stream,
-					getCharset());
+			stream = url.openStream();
+			streamReader = new InputStreamReader(stream, getCharset());
 			xr.parse(new InputSource(streamReader));
 			r = handler.getWeatherData();
 		} catch (Exception e) {
 			Log.e(Constants.LOGTAG, " " + GoogleWeatherFetcher.CLASSTAG, e);
+		} finally {
+			if (streamReader != null) {
+				try {
+					streamReader.close();
+				} catch (IOException e) {
+
+				}
+			}
+			if (stream != null) {
+				try {
+					stream.close();
+				} catch (IOException e) {
+
+				}
+			}
 		}
 		return r;
 	}
