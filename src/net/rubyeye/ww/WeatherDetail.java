@@ -4,7 +4,7 @@ import java.text.DateFormat;
 import java.util.Date;
 
 import net.rubyeye.ww.data.Weather;
-import net.rubyeye.ww.data.Weather.Unit;
+import net.rubyeye.ww.data.WeatherData;
 import net.rubyeye.ww.utils.Constants;
 import net.rubyeye.ww.utils.UriUtils;
 import android.app.Activity;
@@ -19,16 +19,21 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 /**
  * Weather detail activity
+ * 
  * @author dennis
- *
+ * 
  */
 public class WeatherDetail extends Activity {
 
 	static final String MAP_KEY = "bitmap";
 	private TextView detailDay;
 	private TextView detailCondition;
+	private TextView detailCurrentTemp;
+	private TextView detailWindCond;
+	private TextView detailHumidity;
 	private TextView detailLowTemp;
 	private TextView detailHighTemp;
 	private TextView detailCity;
@@ -45,6 +50,9 @@ public class WeatherDetail extends Activity {
 		setContentView(R.layout.weather_detail);
 		detailDay = (TextView) findViewById(R.id.detail_day);
 		detailCondition = (TextView) findViewById(R.id.detail_condition);
+		detailWindCond = (TextView) findViewById(R.id.detail_win_cond);
+		detailHumidity = (TextView) findViewById(R.id.detail_humidity);
+		detailCurrentTemp = (TextView) findViewById(R.id.detail_current_temp);
 		detailLowTemp = (TextView) findViewById(R.id.detail_low_temp);
 		detailHighTemp = (TextView) findViewById(R.id.detail_high_temp);
 		detailCity = (TextView) findViewById(R.id.detail_city);
@@ -105,14 +113,23 @@ public class WeatherDetail extends Activity {
 
 	private void fillData() {
 		WeatherApp weatherApp = (WeatherApp) getApplication();
-		final Weather weather = weatherApp.getWeather();
+		final WeatherData weatherData = weatherApp.getWeatherData();
+		Weather weather = null;
+		if (weatherData != null) {
+			weather = weatherData.todayWeather;
+		}
 		final Bitmap weatherImage = weatherApp.getWeatherImage();
-		if (weather != null) {
-			detailCity.setText(weather.city);
+		if (weatherData != null && weather != null) {
+			detailCity.setText(weatherData.city);
 			detailCondition.setText(weather.condition);
-			detailLowTemp.setText(weather.lowTemp + Unit.getUnit(weather));
-			detailHighTemp.setText(weather.highTemp + Unit.getUnit(weather));
+			String unit = weatherData.unit.getUnit();
+			detailLowTemp.setText(weather.lowTemp + unit);
+			detailHighTemp.setText(weather.highTemp
+					+ unit);
 			detailDay.setText(weather.day);
+			detailCurrentTemp.setText(weatherData.currentTemp+unit);
+			detailWindCond.setText(weatherData.windCondition);
+			detailHumidity.setText(weatherData.humidity);
 			if (weatherImage != null) {
 				imageView.setImageBitmap(weatherImage);
 			}
@@ -124,6 +141,12 @@ public class WeatherDetail extends Activity {
 				detailLastUpdate.setText(simpleDateFormat.format(date));
 			} catch (Exception e) {
 				Log.e(Constants.LOGTAG, " parse last_update error", e);
+			}
+		} else {
+			if (detailCity.getText() == null
+					|| detailCity.getText().length() == 0) {
+				detailCity.setText(getResources().getString(
+						R.string.no_data_label));
 			}
 		}
 	}

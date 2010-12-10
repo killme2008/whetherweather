@@ -5,7 +5,7 @@
 	<string name="common_settings_title">通用配置</string>
 	<string name="city_key">city</string>
 	<string name="city_title">城市</string>
-	<string name="city_summary">天气预报的城市，输入汉字或者拼音</string>
+	<string name="city_summary">汉字或者拼音，如“hangzhou”、“杭州”、“浙江,杭州”</string>
 
 	<string name="update_interval_key">update_interval</string>
 	<string name="update_interval_title">更新间隔</string>
@@ -13,8 +13,8 @@
 	<string name="weather_reminder_key">weather_remainder</string>
 	<string name="weather_reminder_title">天气提醒</string>
 	<string name="severe_weather_reminder_key">severe_weather_reminder</string>
-	<string name="severe_weather_reminder_title">恶劣天气提醒</string>
-	<string name="severe_weather_reminder_summary">主动通知您恶劣的天气状况</string>
+	<string name="severe_weather_reminder_title">天气状况提醒</string>
+	<string name="severe_weather_reminder_summary">主动通知您雨雪等不佳天气状况</string>
 
 	<string name="temp_update_reminder_key">temp_update_reminder</string>
 	<string name="temp_update_reminder_title">气温变化提醒</string>
@@ -28,14 +28,17 @@
 	<string name="temp_update_extent_title">气温变化幅度</string>
 	<string name="temp_update_extent_summary">当气温变化幅度超过此值主动通知您，单位：°C</string>
 
-	<string name="severe_weather_alert">恶劣天气警报</string>
-	<string name="temp_alert">气温变化警报</string>
+	<string name="severe_weather_alert">天气状况告警</string>
+	<string name="temp_alert">气温变化告警</string>
 	<string name="temp_up_alert">最低气温上升了</string>
 	<string name="temp_down_alert">最低气温下降了</string>
 
 	<string name="detail_title">天气预报详情</string>
 	<string name="city_label">城市</string>
 	<string name="condition_label">天气状况</string>
+	<string name="current_temp_label">当前气温</string>
+	<string name="humidity_label">湿度</string>
+	<string name="win_cond_label">风向</string>
 	<string name="low_temp_label">最低温度</string>
 	<string name="high_temp_label">最高温度</string>
 	<string name="last_update_label">更新时间</string>
@@ -45,4 +48,5 @@
 
 	<string name="progress_title">请稍等……</string>
 	<string name="progress_info">获取天气预报信息中……</string>
+	<string name="no_data_label">暂无数据可用</string>
 </resources>

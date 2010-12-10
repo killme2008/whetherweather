@@ -10,20 +10,6 @@ import android.os.Parcelable;
  * 
  */
 public class Weather implements Parcelable {
-	public static enum Unit {
-		SI, US;
-
-		public static String getUnit(Weather today) {
-			switch (today.unit) {
-			case SI:
-				return "°C";
-			case US:
-				return "°F";
-			}
-			return "";
-		}
-	}
-
 	public Weather() {
 		super();
 	}
@@ -37,11 +23,6 @@ public class Weather implements Parcelable {
 	public String imageUrl;
 
 	public String condition;
-	public Unit unit;
-
-	public String city;
-	
-	
 
 	public String getDay() {
 		return day;
@@ -83,22 +64,6 @@ public class Weather implements Parcelable {
 		this.condition = condition;
 	}
 
-	public Unit getUnit() {
-		return unit;
-	}
-
-	public void setUnit(Unit unit) {
-		this.unit = unit;
-	}
-
-	public String getCity() {
-		return city;
-	}
-
-	public void setCity(String city) {
-		this.city = city;
-	}
-
 	@Override
 	public int describeContents() {
 		return 0;
@@ -124,8 +89,6 @@ public class Weather implements Parcelable {
 		this.highTemp = in.readString();
 		this.imageUrl = in.readString();
 		this.condition = in.readString();
-		this.unit = Unit.values()[in.readInt()];
-		this.city = in.readString();
 	}
 
 	@Override
@@ -135,8 +98,6 @@ public class Weather implements Parcelable {
 		dest.writeString(highTemp);
 		dest.writeString(imageUrl);
 		dest.writeString(condition);
-		dest.writeInt(unit.ordinal());
-		dest.writeString(city);
 	}
 
 	/**
@@ -161,7 +122,7 @@ public class Weather implements Parcelable {
 	public String toString() {
 		return "Weather [day=" + day + ", lowTemp=" + lowTemp + ", highTemp="
 				+ highTemp + ", imageUrl=" + imageUrl + ", condition="
-				+ condition + ", unit=" + unit + ", city=" + city + "]";
+				+ condition + "]";
 	}
 
 }

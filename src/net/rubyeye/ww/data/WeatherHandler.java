@@ -3,8 +3,6 @@ package net.rubyeye.ww.data;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.rubyeye.ww.data.Weather.Unit;
-
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -23,9 +21,14 @@ public class WeatherHandler extends DefaultHandler {
 
 	private Weather currentWeather;
 	private Unit unit;
+	private String currentTemp;
+	private String windCondition;
+	private String humidity;
+	private String city;
 
-	public List<Weather> getWeatherList() {
-		return weatherList;
+	public WeatherData getWeatherData() {
+		return new WeatherData(weatherList, currentTemp, windCondition, unit,
+				humidity, city);
 	}
 
 	public void setWeatherList(List<Weather> weatherList) {
@@ -48,10 +51,29 @@ public class WeatherHandler extends DefaultHandler {
 		if (tagName.equals("forecast_conditions")) {
 			inForecast = true;
 			currentWeather = new Weather();
-			currentWeather.unit = (unit == null ? Unit.SI : unit);
 		}
 		if (tagName.equals("unit_system")) {
 			unit = Unit.valueOf(attributes.getValue("data"));
+		}
+		if (tagName.equals("temp_f")) {
+			if (unit == Unit.US) {
+				currentTemp = attributes.getValue("data");
+			}
+		}
+		if (tagName.equals("temp_c")) {
+			if (unit == Unit.SI) {
+				currentTemp = attributes.getValue("data");
+			}
+		}
+		if (tagName.equals("humidity")) {
+			this.humidity = attributes.getValue("data");
+		}
+		if (tagName.equals("wind_condition")) {
+			this.windCondition = attributes.getValue("data");
+
+		}
+		if (tagName.equals("city")) {
+			this.city = attributes.getValue("data");
 		}
 
 		if (inForecast) {

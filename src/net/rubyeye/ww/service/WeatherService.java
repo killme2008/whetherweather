@@ -1,7 +1,6 @@
 package net.rubyeye.ww.service;
 
 import java.util.Date;
-import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -10,8 +9,9 @@ import net.rubyeye.ww.WeatherApp;
 import net.rubyeye.ww.WeatherDetail;
 import net.rubyeye.ww.WhetherWeatherSetting;
 import net.rubyeye.ww.data.GoogleWeatherFetcher;
+import net.rubyeye.ww.data.Unit;
 import net.rubyeye.ww.data.Weather;
-import net.rubyeye.ww.data.Weather.Unit;
+import net.rubyeye.ww.data.WeatherData;
 import net.rubyeye.ww.data.WeatherImageFetcher;
 import net.rubyeye.ww.utils.Constants;
 import net.rubyeye.ww.widget.WeatherWidget;
@@ -70,16 +70,15 @@ public class WeatherService extends Service {
 		return getResources().getConfiguration().locale.toString();
 	}
 
-	private Weather getTodayWeather(String city) {
+	private WeatherData getTodayWeather(String city) {
 		if (city == null || city.trim().length() == 0)
 			city = WhetherWeatherSetting.getCity(this);
 		city = city.trim();
 		GoogleWeatherFetcher fetcher = new GoogleWeatherFetcher(city,
 				getCurrentLocale());
-		List<Weather> weathers = fetcher.getWeather();
-		Weather todayWeather = weathers.get(0);
-		todayWeather.city = city;
-		return todayWeather;
+		WeatherData weatherData = fetcher.getWeather();
+		weatherData.city = city;
+		return weatherData;
 	}
 
 	private void loadWeather(String city, boolean atNow) {
@@ -104,35 +103,40 @@ public class WeatherService extends Service {
 	}
 
 	private void updateWeatherNow(String city) {
-		Weather todayWeather = getTodayWeather(city);
-		if (todayWeather != null) {
-			updateWeather(todayWeather);
+		WeatherData data = getTodayWeather(city);
+		if (data != null) {
+			updateWeather(data);
 		}
 	}
 
-	private Intent updateWeather(Weather todayWeather) {
-		Intent detailIntent = updateWidget(todayWeather);
-		notifySevereWeather(todayWeather, detailIntent);
-		notifyTempChanged(todayWeather, detailIntent);
+	private Intent updateWeather(WeatherData data) {
+		Intent detailIntent = updateWidget(data);
+		notifySevereWeather(data, detailIntent);
+		notifyTempChanged(data, detailIntent);
 		return detailIntent;
 
 	}
 
-	private Intent updateWidget(Weather todayWeather) {
+	private Intent updateWidget(WeatherData data) {
 		RemoteViews updateViews = new RemoteViews(getPackageName(),
 				R.layout.today_weather);
-		updateViews.setTextViewText(R.id.city, todayWeather.city);
-		updateViews.setTextViewText(R.id.condition, todayWeather.condition);
-		updateViews.setTextViewText(R.id.temp, todayWeather.lowTemp + " ~ "
-				+ todayWeather.highTemp + " " + Unit.getUnit(todayWeather));
-		Bitmap image = WeatherImageFetcher.getWeatherImage(todayWeather);
-		Intent detailIntent = new Intent(this, WeatherDetail.class);
-		WeatherApp weatherApp = (WeatherApp) getApplication();
-		weatherApp.setWeather(todayWeather);
-		weatherApp.setWeatherImage(null);
-		if (image != null) {
-			updateViews.setImageViewBitmap(R.id.weather_image, image);
-			weatherApp.setWeatherImage(image);
+		Weather todayWeather = data.todayWeather;
+		Intent detailIntent = null;
+		if (data != null && todayWeather != null) {
+			updateViews.setTextViewText(R.id.city, data.city);
+			updateViews.setTextViewText(R.id.condition, todayWeather.condition);
+			updateViews.setTextViewText(R.id.temp, todayWeather.lowTemp + " ~ "
+					+ todayWeather.highTemp + " " + data.unit.getUnit());
+			Bitmap image = WeatherImageFetcher.getWeatherImage(todayWeather);
+
+			detailIntent = new Intent(this, WeatherDetail.class);
+			WeatherApp weatherApp = (WeatherApp) getApplication();
+			weatherApp.setWeatherData(data);
+			weatherApp.setWeatherImage(null);
+			if (image != null) {
+				updateViews.setImageViewBitmap(R.id.weather_image, image);
+				weatherApp.setWeatherImage(image);
+			}
 		}
 
 		PendingIntent pending = PendingIntent.getActivity(this, 0,
@@ -154,43 +158,52 @@ public class WeatherService extends Service {
 		return detailIntent;
 	}
 
-	private void notifyTempChanged(Weather todayWeather, Intent detailIntent) {
-		int oldLowTemp = Integer.parseInt(WhetherWeatherSetting
-				.getLastLowTemp(this));
-		int lowTemp = Integer.parseInt(todayWeather.lowTemp);
-		// cast to c temp for calc
-		if (todayWeather.unit == Unit.US) {
-			lowTemp = getCTemp(lowTemp);
-		}
-		WhetherWeatherSetting.setLastLowTemp(this, String.valueOf(lowTemp));
-		if (oldLowTemp != WhetherWeatherSetting.INVALID_LOW_TEMP) {
-			int extent = lowTemp - oldLowTemp;
-			int absExtent = Math.abs(extent);
-			if (WhetherWeatherSetting.isTempUpdateRemainderEnable(this)
-					&& absExtent >= WhetherWeatherSetting
-							.getTempUpdateExtent(this)) {
-				String title = getResources().getString(R.string.temp_alert);
-				String alert = extent < 0 ? getResources().getString(
-						R.string.temp_down_alert) : getResources().getString(
-						R.string.temp_up_alert);
-				// cast to f temp for display
-				if (todayWeather.unit == Unit.US) {
-					absExtent = Math.abs(getFTemp(oldLowTemp) - Integer.parseInt(todayWeather.lowTemp));
+	private void notifyTempChanged(WeatherData data, Intent detailIntent) {
+		if (data != null && data.todayWeather != null) {
+			Weather todayWeather = data.todayWeather;
+
+			int oldLowTemp = Integer.parseInt(WhetherWeatherSetting
+					.getLastLowTemp(this));
+			int lowTemp = Integer.parseInt(todayWeather.lowTemp);
+			// cast to c temp for calc
+			if (data.unit == Unit.US) {
+				lowTemp = getCTemp(lowTemp);
+			}
+			WhetherWeatherSetting.setLastLowTemp(this, String.valueOf(lowTemp));
+			if (oldLowTemp != WhetherWeatherSetting.INVALID_LOW_TEMP) {
+				int extent = lowTemp - oldLowTemp;
+				int absExtent = Math.abs(extent);
+				if (WhetherWeatherSetting.isTempUpdateRemainderEnable(this)
+						&& absExtent >= WhetherWeatherSetting
+								.getTempUpdateExtent(this)) {
+					String title = getResources()
+							.getString(R.string.temp_alert);
+					String alert = extent < 0 ? getResources().getString(
+							R.string.temp_down_alert) : getResources()
+							.getString(R.string.temp_up_alert);
+					// cast to f temp for display
+					if (data.unit == Unit.US) {
+						absExtent = Math.abs(getFTemp(oldLowTemp)
+								- Integer.parseInt(todayWeather.lowTemp));
+					}
+					notifyWeather(title, title + ":" + alert + " " + absExtent
+							+ data.unit.getUnit(), detailIntent);
 				}
-				notifyWeather(title, title + ":" + alert + " " + absExtent
-						+ Unit.getUnit(todayWeather), detailIntent);
 			}
 		}
 	}
 
-	private void notifySevereWeather(Weather todayWeather, Intent detailIntent) {
-		if (WhetherWeatherSetting.isSevereWeatherReminderEnable(this)
-				&& todayWeather.isSevereWeather(getResources().getStringArray(
-						R.array.severe_weathers))) {
-			String title = getResources().getString(
-					R.string.severe_weather_alert);
-			notifyWeather(title, title + ":" + todayWeather.condition + " @ "
-					+ todayWeather.city, detailIntent);
+	private void notifySevereWeather(WeatherData data, Intent detailIntent) {
+		if (data != null && data.todayWeather != null) {
+			Weather todayWeather = data.todayWeather;
+			if (WhetherWeatherSetting.isSevereWeatherReminderEnable(this)
+					&& todayWeather.isSevereWeather(getResources()
+							.getStringArray(R.array.severe_weathers))) {
+				String title = getResources().getString(
+						R.string.severe_weather_alert);
+				notifyWeather(title, title + ":" + todayWeather.condition
+						+ " @ " + data.city, detailIntent);
+			}
 		}
 	}
 

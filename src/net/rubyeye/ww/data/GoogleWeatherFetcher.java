@@ -3,8 +3,6 @@ package net.rubyeye.ww.data;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
@@ -56,8 +54,8 @@ public class GoogleWeatherFetcher {
 		return Constants.ENCODING;
 	}
 
-	public List<Weather> getWeather() {
-		List<Weather> r = new ArrayList<Weather>();
+	public WeatherData getWeather() {
+		WeatherData r = null;
 
 		try {
 			URL url = new URL(this.query);
@@ -70,7 +68,7 @@ public class GoogleWeatherFetcher {
 			InputStreamReader streamReader = new InputStreamReader(stream,
 					getCharset());
 			xr.parse(new InputSource(streamReader));
-			r = handler.getWeatherList();
+			r = handler.getWeatherData();
 		} catch (Exception e) {
 			Log.e(Constants.LOGTAG, " " + GoogleWeatherFetcher.CLASSTAG, e);
 		}
