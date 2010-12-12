@@ -40,7 +40,7 @@ public class WeatherService extends Service {
 	private final class LoadWeatherTask extends TimerTask {
 		@Override
 		public void run() {
-			loadWeather(null, false);
+			loadWeather(null, true);
 		}
 	}
 
